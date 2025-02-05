@@ -19,10 +19,8 @@ Esta é uma aplicação de console desenvolvida em Java que armazena dados de fu
 2. Classe Funcionário que estenda a classe Pessoa, com os atributos: salário (BigDecimal) e função (String).
 3. Deve conter uma classe Principal para executar as seguintes ações:
     - Inserir todos os funcionários, na mesma ordem e informações da tabela acima.
-    – Remover o funcionário “João” da lista.
-    – Imprimir todos os funcionários com todas suas informações, sendo que:
-      - informação de data deve ser exibido no formato dd/mm/aaaa;
-      - informação de valor numérico deve ser exibida no formatado com separador de milhar como ponto e decimal como vírgula.
+    - Remover o funcionário “João” da lista.
+    - Imprimir todos os funcionários com todas suas informações, sendo que a informação de data deve ser exibido no formato dd/mm/aaaa, e o valor numérico deve ser exibida no formatado com separador de milhar como ponto e decimal como vírgula.
     - Os funcionários receberam 10% de aumento de salário, atualizar a lista de funcionários com novo valor.
     - Agrupar os funcionários por função em um MAP, sendo a chave a “função” e o valor a “lista de funcionários”.
     - Imprimir os funcionários, agrupados por função.
