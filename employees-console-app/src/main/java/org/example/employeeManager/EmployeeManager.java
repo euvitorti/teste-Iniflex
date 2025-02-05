@@ -7,6 +7,7 @@ import org.example.readXML.EmployeeReader;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -88,4 +89,48 @@ public class EmployeeManager {
                 employee.role(),
                 formattedSalary);
     }
+
+    public void displayEmployeesByBirthMonth(int month) {
+        List<Employee> employeesInMonth = employees.stream()
+                .filter(employee -> employee.person().birthDate().getMonthValue() == month)
+                .collect(Collectors.toList());
+
+        if (employeesInMonth.isEmpty()) {
+            System.out.println("📌 Nenhum funcionário faz aniversário no mês " + month + ".");
+            return;
+        }
+
+        System.out.println("\n🎉 Funcionários que fazem aniversário no mês " + month + ":");
+        employeesInMonth.forEach(this::formatEmployeeDetails);
+    }
+
+    // Display employees with birthdays in October (10) and December (12)
+    public void displayDefaultBirthMonths() {
+        List<Integer> defaultMonths = Arrays.asList(10, 12);
+
+        for (int month : defaultMonths) {
+            displayEmployeesByBirthMonth(month);
+        }
+    }
+
+    public void displayOldestEmployee() {
+        if (employees.isEmpty()) {
+            System.out.println("📌 Nenhum funcionário cadastrado.");
+            return;
+        }
+
+        Employee oldestEmployee = employees.stream()
+                .min((e1, e2) -> e1.person().birthDate().compareTo(e2.person().birthDate())) // Ordena pela data de nascimento mais antiga
+                .orElse(null);
+
+        if (oldestEmployee != null) {
+            int age = java.time.Period.between(oldestEmployee.person().birthDate(), java.time.LocalDate.now()).getYears();
+            System.out.printf("""
+        🏆 Funcionário mais velho:
+        👤 Nome: %s
+        🎂 Idade: %d anos
+        """, oldestEmployee.person().name(), age);
+        }
+    }
+
 }

@@ -39,6 +39,36 @@ public class Main {
         manager.displayEmployeesByRole(role);
     }
 
+    private static void listEmployeesByBirthMonth() {
+        System.out.println("""
+        Escolha uma opção:
+        [1] - Listar aniversariantes dos meses 10 e 12
+        [2] - Escolher um mês específico
+        """);
+
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // Consumir a quebra de linha
+
+        if (choice == 1) {
+            manager.displayDefaultBirthMonths();
+        } else if (choice == 2) {
+            System.out.println("Digite o número do mês (1-12): ");
+            int month = scanner.nextInt();
+            scanner.nextLine(); // Consumir a quebra de linha
+
+            if (month < 1 || month > 12) {
+                System.out.println("📌 Mês inválido! Digite um valor entre 1 e 12.");
+            } else {
+                manager.displayEmployeesByBirthMonth(month);
+            }
+        } else {
+            System.out.println("📌 Opção inválida!");
+        }
+    }
+
+    private static void displayOldestEmployee() {
+        manager.displayOldestEmployee();
+    }
 
     public static void main(String[] args) {
         while (true) {
@@ -49,6 +79,8 @@ public class Main {
             [2] - Remover um funcionário
             [3] - Aumentar salário de todos os funcionários em 10%
             [4] - Listar funcionários por cargo
+            [5] - Listar por mês de aniversário
+            [6] - Funcionário mais velho
             [10] - Sair
             """);
 
@@ -60,6 +92,8 @@ public class Main {
                 case 2 -> removeEmployee();
                 case 3 -> increaseSalaries();
                 case 4 -> listEmployeesByRole();
+                case 5 -> listEmployeesByBirthMonth();
+                case 6 -> displayOldestEmployee();
                 case 10 -> {
                     System.out.println("Encerrando...");
                     return;
