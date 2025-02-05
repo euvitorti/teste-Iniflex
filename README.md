@@ -1,6 +1,15 @@
 # Teste mão na massa
 
-A aplicação é executada no console e armazena os dados em uma lista, permitindo futura escalabilidade para um banco de dados. Os dados dos funcionários são carregados a partir de um arquivo XML, garantindo que a aplicação seja fácil de atualizar e adaptar para diferentes fontes de dados. Algumas funcionalidades já estão incorporadas em outras, como a listagem de funcionários, que já apresenta os dados em ordem alfabética.
+Esta é uma aplicação de console desenvolvida em Java que armazena dados de funcionários em uma lista, permitindo futura escalabilidade para um banco de dados. Os dados são carregados a partir de um arquivo XML, tornando a aplicação flexível para diferentes fontes de dados.
+
+---
+
+## Tecnologias Utilizadas
+
+- Java 21: Linguagem principal do projeto.
+- Maven: Gerenciador de dependências e build.
+- Jackson (Databind e Core): Para manipulação de dados XML e conversão para objetos Java.
+- JUnit 5: Para testes automatizados.
 
 ---
 
@@ -25,9 +34,38 @@ A aplicação é executada no console e armazena os dados em uma lista, permitin
 
 ---
 
-## Requisitos
-- Java 21 ou superior
-- Maven
+## Dependências (Maven)
+
+As dependências utilizadas no projeto estão no pom.xml:
+```
+    <dependencies>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.15.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.15.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.11.4</version>
+        </dependency>
+    </dependencies>
+```
+
+---
+
+## Testes Automatizados
+
+Os testes garantem a robustez da aplicação, verificando:
+
+- Carregamento correto do arquivo XML
+- Validação de atributos essenciais nos objetos Employee
+- Comportamento esperado para arquivos XML inexistentes
 
 ---
 
@@ -39,9 +77,13 @@ Clone o repositório para o seu ambiente local:
   git clone https://github.com/euvitorti/teste-Iniflex.git
 ```
 
-- Execute a aplicação no seu ambiente de desenvolvimento
+- Abra o projeto na sua IDE, e execute a aplicação no seu ambiente de desenvolvimento
 ---
 
 ## Considerações Finais
 
-A aplicação foi projetada para ser simples, mas escalável. A carga de dados dos funcionários a partir de um XML facilita futuras modificações e ampliações, como a integração com um banco de dados real. Fique à vontade para sugerir melhorias ou ajustes conforme necessário.
+A aplicação foi desenvolvida para ser simples e escalável. A utilização de XML para armazenar dados facilita futuras adaptações, como integrações com bancos de dados ou APIs externas.
+
+Caso tenha sugestões de melhorias, fique à vontade para contribuir!
+
+
