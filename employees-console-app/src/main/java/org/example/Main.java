@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
-    private static final EmployeeManager manager = new EmployeeManager(); // Criar apenas uma instância do gerenciador
+    private static final EmployeeManager manager = new EmployeeManager(); // Instância do gerenciador
 
     // Função para remover um funcionário
     private static void removeEmployee() {
@@ -15,23 +15,24 @@ public class Main {
                 [1] - Para remover o funcionário João
                 [2] - Escolher outro funcionário
                 """);
-        int choice = scanner.nextInt(); // Leitura da escolha do usuário
 
-        // Se o usuário escolheu remover João
-        if(choice == 1){
-            manager.removeEmployeeByName("João"); // Remove o funcionário João
-        } else {
-            System.out.println("Digite o nome do funcionário: ");
-            String name = scanner.next(); // Leitura do nome do funcionário a ser removido
-            manager.removeEmployeeByName(name); // Remove o funcionário com o nome fornecido
+        int choice = -1; // Inicializa a variável choice
+        try {
+            choice = scanner.nextInt(); // Leitura da escolha do usuário
+            scanner.nextLine(); // Consumir a quebra de linha
+        } catch (Exception e) {
+            System.out.println("Entrada inválida! Digite um número.");
+            scanner.nextLine(); // Consumir o buffer da entrada inválida
         }
+
+        String name = (choice == 1) ? "João" : scanner.next(); // Escolher o nome conforme a opção
+        manager.removeEmployeeByName(name); // Remove o funcionário
     }
 
     // Função para listar os funcionários por cargo
     private static void listEmployeesByRole() {
         System.out.println("Digite a função para listar os funcionários:");
-        String role = scanner.nextLine(); // Leitura do cargo
-        manager.displayEmployeesByRole(role); // Exibe os funcionários com o cargo fornecido
+        manager.displayEmployeesByRole(scanner.nextLine()); // Leitura e exibição dos funcionários por cargo
     }
 
     // Função para listar os funcionários por mês de aniversário
@@ -42,30 +43,39 @@ public class Main {
         [2] - Escolher um mês específico
         """);
 
-        int choice = scanner.nextInt(); // Leitura da escolha do usuário
-        scanner.nextLine(); // Consumir a quebra de linha
+        int choice = -1; // Inicializa a variável choice
+        try {
+            choice = scanner.nextInt(); // Leitura da escolha do usuário
+            scanner.nextLine(); // Consumir a quebra de linha
+        } catch (Exception e) {
+            System.out.println("Entrada inválida! Digite um número.");
+            scanner.nextLine(); // Consumir o buffer da entrada inválida
+        }
 
-        // Se o usuário escolheu listar aniversariantes de outubro e dezembro
         if (choice == 1) {
-            manager.displayDefaultBirthMonths(); // Exibe os aniversariantes desses meses
+            manager.displayDefaultBirthMonths(); // Exibe aniversariantes dos meses 10 e 12
         } else if (choice == 2) {
             System.out.println("Digite o número do mês (1-12): ");
-            int month = scanner.nextInt(); // Leitura do mês desejado
-            scanner.nextLine(); // Consumir a quebra de linha
-
-            // Verifica se o mês digitado é válido
-            if (month < 1 || month > 12) {
-                System.out.println("📌 Mês inválido! Digite um valor entre 1 e 12.");
-            } else {
-                manager.displayEmployeesByBirthMonth(month); // Exibe os aniversariantes do mês especificado
+            int month = -1;
+            try {
+                month = scanner.nextInt(); // Leitura do mês
+                scanner.nextLine(); // Consumir a quebra de linha
+                if (month < 1 || month > 12) {
+                    System.out.println("📌 Mês inválido! Digite um valor entre 1 e 12.");
+                } else {
+                    manager.displayEmployeesByBirthMonth(month); // Exibe os aniversariantes do mês especificado
+                }
+            } catch (Exception e) {
+                System.out.println("Entrada inválida! Digite um número.");
+                scanner.nextLine(); // Consumir o buffer da entrada inválida
             }
         } else {
-            System.out.println("📌 Opção inválida!"); // Caso a escolha seja inválida
+            System.out.println("📌 Opção inválida!");
         }
     }
 
     public static void main(String[] args) {
-        while (true) { // Loop principal do menu
+        while (true) {
             System.out.println("""
                 [1] - Listar funcionários
                 [2] - Remover um funcionário
@@ -75,26 +85,32 @@ public class Main {
                 [6] - Listar funcionário mais velho
                 [7] - Exibir o total dos salários
                 [8] - Exibir quantos salários mínimos cada funcionário ganha
-                [10] - Sair
+                [9] - Sair
             """);
 
-            int choice = scanner.nextInt(); // Leitura da opção escolhida
-            scanner.nextLine(); // Consumir a quebra de linha após nextInt()
+            int choice = -1; // Inicializa a variável choice
+            try {
+                choice = scanner.nextInt(); // Leitura da escolha
+                scanner.nextLine(); // Consumir a quebra de linha
+            } catch (Exception e) {
+                System.out.println("Entrada inválida! Digite um número.");
+                scanner.nextLine(); // Consumir o buffer da entrada inválida
+            }
 
-            switch (choice) { // Estrutura de controle para cada escolha
-                case 1 -> manager.displayEmployees(); // Exibe os funcionários
-                case 2 -> removeEmployee(); // Chama a função para remover um funcionário
-                case 3 -> manager.increaseSalariesBy10Percent(); // Aumenta o salário de todos em 10%
-                case 4 -> listEmployeesByRole(); // Lista os funcionários por cargo
-                case 5 -> listEmployeesByBirthMonth(); // Lista os funcionários por mês de aniversário
-                case 6 -> manager.displayOldestEmployee(); // Exibe o funcionário mais velho
-                case 7 -> manager.displayTotalSalaries(); // Exibe o total de salários
-                case 8 -> manager.displaySalariesInMinimumWages(); // Exibe salários em múltiplos do salário mínimo
-                case 10 -> {
-                    System.out.println("Encerrando..."); // Encerra o programa
+            switch (choice) {
+                case 1 -> manager.displayEmployees();
+                case 2 -> removeEmployee();
+                case 3 -> manager.increaseSalariesBy10Percent();
+                case 4 -> listEmployeesByRole();
+                case 5 -> listEmployeesByBirthMonth();
+                case 6 -> manager.displayOldestEmployee();
+                case 7 -> manager.displayTotalSalaries();
+                case 8 -> manager.displaySalariesInMinimumWages();
+                case 9 -> {
+                    System.out.println("Encerrando...");
                     return;
                 }
-                default -> System.out.println("Opção inválida!"); // Caso a opção seja inválida
+                default -> System.out.println("Opção inválida!");
             }
         }
     }
