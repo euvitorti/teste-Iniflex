@@ -4,7 +4,7 @@ A aplicação é executada no console e armazena os dados em uma lista, permitin
 
 ---
 
-## Regra de negócio
+## Regras de negócio
 
 1. Classe Pessoa com os atributos: nome (String) e data nascimento (LocalDate).
 2. Classe Funcionário que estenda a classe Pessoa, com os atributos: salário (BigDecimal) e função (String).
