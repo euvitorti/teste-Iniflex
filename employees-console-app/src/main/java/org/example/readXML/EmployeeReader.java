@@ -23,7 +23,7 @@ public class EmployeeReader {
     // Método para ler o arquivo XML e retornar um objeto EmployeeReader com a lista de funcionários
     public static EmployeeReader fromXML() {
         List<Employee> employees = new ArrayList<>();
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Data format
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         try {
             Document document = readXML.ReadXml.fromXML(XML_FILE_PATH, EmployeeReader.class);

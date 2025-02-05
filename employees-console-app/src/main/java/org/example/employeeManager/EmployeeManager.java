@@ -4,6 +4,7 @@ import org.example.model.employee.Employee;
 import org.example.readXML.EmployeeReader;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
@@ -18,6 +19,27 @@ public class EmployeeManager {
 
     public EmployeeManager() {
         employees = EmployeeReader.fromXML().getEmployees();
+    }
+
+    private boolean isEmployeeListEmpty() {
+        if (employees.isEmpty()) {
+            System.out.println("📌 Nenhum funcionário cadastrado.");
+            return true;
+        }
+        return false;
+    }
+
+    // Exibir funcionários em ordem alfabética
+    public void displayEmployees() {
+        if (isEmployeeListEmpty()) return;
+
+        // Ordena alfabeticamente pelo nome
+        List<Employee> sortedEmployees = employees.stream()
+                .sorted(Comparator.comparing(e -> e.person().name()))
+                .toList();
+
+        System.out.println("\n🔹 Lista de Funcionários (Ordenados por Nome) 🔹");
+        sortedEmployees.forEach(this::formatEmployeeDetails);
     }
 
     // Aumentar salários em 10%
@@ -36,22 +58,6 @@ public class EmployeeManager {
     public void removeEmployeeByName(String name) {
         employees.removeIf(employee -> employee.person().name().equalsIgnoreCase(name));
         System.out.printf("\n✅ %s foi removido com sucesso.\n", name);
-    }
-
-    // Exibir funcionários em ordem alfabética
-    public void displayEmployees() {
-        if (employees.isEmpty()) {
-            System.out.println("📌 Não há funcionários cadastrados.");
-            return;
-        }
-
-        // Ordena alfabeticamente pelo nome
-        List<Employee> sortedEmployees = employees.stream()
-                .sorted(Comparator.comparing(e -> e.person().name()))
-                .toList();
-
-        System.out.println("\n🔹 Lista de Funcionários (Ordenados por Nome) 🔹");
-        sortedEmployees.forEach(this::formatEmployeeDetails);
     }
 
     // Agrupar funcionários por cargo
@@ -80,7 +86,7 @@ public class EmployeeManager {
         String formattedSalary = "R$ " + decimalFormat.format(employee.salary());
 
         System.out.printf(""" 
-        ---------------------------- 
+        ----------------------------
         👤 Nome: %s 
         🎂 Data de Nascimento: %s 
         💼 Cargo: %s 
@@ -100,11 +106,11 @@ public class EmployeeManager {
                 .collect(Collectors.toList());
 
         if (employeesInMonth.isEmpty()) {
-            System.out.println("📌 Nenhum funcionário faz aniversário no mês " + month + ".");
+            System.out.printf("📌 Nenhum funcionário faz aniversário no %d: ", month);
             return;
         }
 
-        System.out.println("\n🎉 Funcionários que fazem aniversário no mês " + month + ":");
+        System.out.printf("\n🎉 Funcionários que fazem aniversário no mês %d: ", month);
         employeesInMonth.forEach(this::formatEmployeeDetails);
     }
 
@@ -119,19 +125,20 @@ public class EmployeeManager {
 
     // Exibir o funcionário mais velho
     public void displayOldestEmployee() {
-        if (employees.isEmpty()) {
-            System.out.println("📌 Nenhum funcionário cadastrado.");
-            return;
-        }
+        if (isEmployeeListEmpty()) return;
 
         Employee oldestEmployee = employees.stream()
-                .min((e1, e2) -> e1.person().birthDate().compareTo(e2.person().birthDate())) // Ordena pela data de nascimento mais antiga
+                // O método `min()` encontra o menor valor baseado em um critério de comparação.
+                // Comparando as datas de nascimento para encontrar a data mais antiga (o funcionário mais velho).
+                .min((e1, e2) -> e1.person().birthDate().compareTo(e2.person().birthDate()))
                 .orElse(null);
 
         if (oldestEmployee != null) {
+            // Calcula a idade do funcionário mais velho, subtraindo a data de nascimento da data atual
             int age = java.time.Period.between(oldestEmployee.person().birthDate(), java.time.LocalDate.now()).getYears();
+
             System.out.printf(""" 
-        🏆 Funcionário mais velho: 
+        🏆 Funcionário mais velho:
         👤 Nome: %s 
         🎂 Idade: %d anos 
         """, oldestEmployee.person().name(), age);
@@ -140,14 +147,14 @@ public class EmployeeManager {
 
     // Exibir o total dos salários dos funcionários
     public void displayTotalSalaries() {
-        if (employees.isEmpty()) {
-            System.out.println("📌 Nenhum funcionário cadastrado.");
-            return;
-        }
+        if (isEmployeeListEmpty()) return;
 
         BigDecimal totalSalary = employees.stream()
+                // `map(Employee::salary)` transforma cada funcionário no seu salário (extrai o valor do salário).
                 .map(Employee::salary)
-                .reduce(BigDecimal.ZERO, BigDecimal::add); // Soma todos os salários
+                // `reduce(BigDecimal.ZERO, BigDecimal::add)` soma todos os salários.
+                // Começa com o valor inicial `BigDecimal.ZERO` e usa o método `add` para somar os valores.
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         String formattedTotal = currencyFormatter.format(totalSalary);
 
@@ -156,21 +163,24 @@ public class EmployeeManager {
 
     // Exibir quantos salários mínimos cada funcionário ganha
     public void displaySalariesInMinimumWages() {
-        if (employees.isEmpty()) {
-            System.out.println("📌 Nenhum funcionário cadastrado.");
-            return;
-        }
+        if (isEmployeeListEmpty()) return;
 
         BigDecimal minimumWage = new BigDecimal("1212.00");
 
-        System.out.println("\n💰 Salários dos funcionários em múltiplos do salário mínimo:");
+        System.out.println("\n💰 Exibindo salários dos funcionários em termos de salários mínimos:");
 
+        // Para cada funcionário na lista
         employees.forEach(employee -> {
+            // Obtém o salário do funcionário
             BigDecimal salary = employee.salary();
-            BigDecimal salaryInMinimumWages = salary.divide(minimumWage, 2, BigDecimal.ROUND_HALF_UP); // Divide e mantém 2 casas decimais
 
+            // Calcula quantos salários mínimos o funcionário recebe
+            BigDecimal salaryInMinimumWages = salary.divide(minimumWage, 2, RoundingMode.HALF_UP);
+
+            // Exibe o nome do funcionário e quantos salários mínimos ele recebe, formatado com 2 casas decimais
             System.out.printf("👤 %s recebe aproximadamente %.2f salários mínimos.\n",
                     employee.person().name(), salaryInMinimumWages);
         });
     }
+
 }
