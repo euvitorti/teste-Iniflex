@@ -56,8 +56,11 @@ public class EmployeeManager {
 
     // Remover funcionário pelo nome
     public void removeEmployeeByName(String name) {
-        employees.removeIf(employee -> employee.person().name().equalsIgnoreCase(name));
-        System.out.printf("\n✅ %s foi removido com sucesso.\n", name);
+        System.out.printf("\n%s\n",
+                employees.removeIf(employee -> employee.person().name().equalsIgnoreCase(name))
+                        ? String.format("✅ %s foi removido com sucesso.", name)
+                        : String.format("❌ Nenhum funcionário com o nome %s foi encontrado.", name)
+        );
     }
 
     // Agrupar funcionários por cargo
@@ -106,7 +109,7 @@ public class EmployeeManager {
                 .collect(Collectors.toList());
 
         if (employeesInMonth.isEmpty()) {
-            System.out.printf("📌 Nenhum funcionário faz aniversário no %d: ", month);
+            System.out.printf("📌 Nenhum funcionário faz aniversário no %d: \n", month);
             return;
         }
 

@@ -12,9 +12,9 @@ public class Main {
     // Função para remover um funcionário
     private static void removeEmployee() {
         System.out.println("""
-                [1] - Para remover o funcionário João
-                [2] - Escolher outro funcionário
-                """);
+            [1] - Para remover o funcionário João
+            [2] - Escolher outro funcionário
+            """);
 
         int choice = -1;
         try {
@@ -25,8 +25,19 @@ public class Main {
             scanner.nextLine(); // Consumir o buffer da entrada inválida
         }
 
-        String name = (choice == 1) ? "João" : scanner.next(); // Escolher o nome conforme a opção
-        manager.removeEmployeeByName(name);
+        String name = null;
+        if (choice == 1) {
+            name = "João";
+        } else if (choice == 2) {
+            System.out.println("Digite o nome do funcionário a ser removido:");
+            name = scanner.nextLine(); // Solicita o nome
+        }
+
+        if (name != null) {
+            manager.removeEmployeeByName(name);
+        } else {
+            System.out.println("Opção inválida.");
+        }
     }
 
     // Função para listar os funcionários por cargo
@@ -79,15 +90,18 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             System.out.println("""
-                [1] - Listar funcionários
-                [2] - Remover um funcionário
-                [3] - Aumentar salário de todos os funcionários em 10%
-                [4] - Listar funcionários por cargo
-                [5] - Listar funcionários por mês de aniversário
-                [6] - Listar funcionário mais velho
-                [7] - Exibir o total dos salários
-                [8] - Exibir quantos salários mínimos cada funcionário ganha
-                [9] - Sair
+                               Gestão de funcionários
+            -------------------------------------------------------------
+            [1] - Listar funcionários
+            [2] - Remover um funcionários
+            [3] - Aumentar salário de todos os funcionários em 10%
+            [4] - Listar funcionários por cargo
+            [5] - Listar funcionários por mês de aniversário
+            [6] - Listar funcionário mais velho
+            [7] - Exibir o total dos salários
+            [8] - Exibir quantos salários mínimos cada funcionário ganha
+            [9] - Sair
+            -------------------------------------------------------------
             """);
 
             int choice = -1;
@@ -110,9 +124,8 @@ public class Main {
                 case 8 -> manager.displaySalariesInMinimumWages();
                 case 9 -> {
                     System.out.println("""
-                        Encerrando...
-                        
-                        Desenvolvido por João Vítor Santos Lima
+                    Encerrando...
+                    Desenvolvido por João Vítor Santos Lima
                     """);
                     return;
                 }
