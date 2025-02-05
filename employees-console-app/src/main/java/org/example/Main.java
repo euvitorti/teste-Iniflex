@@ -109,7 +109,11 @@ public class Main {
                 case 7 -> manager.displayTotalSalaries();
                 case 8 -> manager.displaySalariesInMinimumWages();
                 case 9 -> {
-                    System.out.println("Encerrando...");
+                    System.out.println("""
+                        Encerrando...
+                        
+                        Desenvolvido por João Vítor Santos Lima
+                    """);
                     return;
                 }
                 default -> System.out.println("Opção inválida!");
