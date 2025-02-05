@@ -7,10 +7,7 @@ import org.example.readXML.EmployeeReader;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class EmployeeManager {
@@ -41,16 +38,22 @@ public class EmployeeManager {
         System.out.printf("\n✅ %s foi removido com sucesso.\n", name);
     }
 
-    // Display all employees
+    // Exibir funcionários em ordem alfabética
     public void displayEmployees() {
         if (employees.isEmpty()) {
             System.out.println("📌 Não há funcionários cadastrados.");
             return;
         }
 
-        System.out.println("\n🔹 Lista de Funcionários 🔹");
-        employees.forEach(this::formatEmployeeDetails);
+        // Ordena alfabeticamente pelo nome
+        List<Employee> sortedEmployees = employees.stream()
+                .sorted(Comparator.comparing(e -> e.person().name()))
+                .toList();
+
+        System.out.println("\n🔹 Lista de Funcionários (Ordenados por Nome) 🔹");
+        sortedEmployees.forEach(this::formatEmployeeDetails);
     }
+
 
     // Group employees by role
     public Map<String, List<Employee>> groupEmployeesByRole() {
