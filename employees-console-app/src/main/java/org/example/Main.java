@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.EmployeeManager.EmployeeManager;
+import org.example.employeeManager.EmployeeManager;
 
 import java.util.Scanner;
 

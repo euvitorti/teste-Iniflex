@@ -1,14 +1,19 @@
-package org.example.EmployeeManager;
+package org.example.employeeManager;
 
 import org.example.model.employee.Employee;
 import org.example.readXML.EmployeeReader;
 
+import java.text.NumberFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Iterator;
+import java.util.Locale;
 
 public class EmployeeManager {
 
     private List<Employee> employees;
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final NumberFormat currencyFormatter = NumberFormat.getInstance(new Locale("pt", "BR"));
 
     public EmployeeManager() {
         employees = EmployeeReader.fromXML().getEmployees();
@@ -37,6 +42,8 @@ public class EmployeeManager {
 
         System.out.println("\n🔹 Lista de Funcionários 🔹");
         for (Employee employee : employees) {
+            String formattedSalary = currencyFormatter.format(employee.salary());
+
             System.out.printf("""
             ----------------------------
             👤 Nome: %s
@@ -46,9 +53,9 @@ public class EmployeeManager {
             ----------------------------
             """,
                     employee.person().name(),
-                    employee.person().birthDate(),
+                    employee.person().birthDate().format(dateFormatter), // Formata a data para dd/MM/yyyy
                     employee.role(),
-                    employee.salary());
+                    formattedSalary);
         }
     }
 }
