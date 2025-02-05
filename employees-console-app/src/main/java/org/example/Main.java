@@ -29,6 +29,17 @@ public class Main {
         }
     }
 
+    private static void increaseSalaries() {
+        manager.increaseSalariesBy10Percent();
+    }
+
+    private static void listEmployeesByRole() {
+        System.out.println("Digite a função para listar os funcionários:");
+        String role = scanner.nextLine();
+        manager.displayEmployeesByRole(role);
+    }
+
+
     public static void main(String[] args) {
         while (true) {
             System.out.println("""
@@ -36,7 +47,9 @@ public class Main {
             
             [1] - Listar funcionários
             [2] - Remover um funcionário
-            [3] - Sair
+            [3] - Aumentar salário de todos os funcionários em 10%
+            [4] - Listar funcionários por cargo
+            [10] - Sair
             """);
 
             int choice = scanner.nextInt();
@@ -45,7 +58,9 @@ public class Main {
             switch (choice) {
                 case 1 -> addEmployee();
                 case 2 -> removeEmployee();
-                case 3 -> {
+                case 3 -> increaseSalaries();
+                case 4 -> listEmployeesByRole();
+                case 10 -> {
                     System.out.println("Encerrando...");
                     return;
                 }
