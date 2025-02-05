@@ -1,42 +1,56 @@
 package org.example;
 
-import org.example.model.employee.Employee;
-import org.example.readXML.EmployeeReader;
+import org.example.EmployeeManager.EmployeeManager;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final EmployeeManager manager = new EmployeeManager(); // Criar apenas uma instância
 
-    private static void addEmployee(){
-        EmployeeReader.fromXML(); // Carrega os dados (só faz isso uma vez)
-        List<Employee> employees = EmployeeReader.fromXML().getEmployees(); // Obtém os funcionários armazenados
+    private static void addEmployee() {
+        manager.displayEmployees();
+    }
 
-        System.out.println("Funcionários cadastrados com sucesso!");
+    private static void removeEmployee() {
+        System.out.println("""
+                [1] - Para remover o funcionário João
+                [2] - Escolher outro funcionário
+                """);
+        int choice = scanner.nextInt();
 
-//        // Agora você pode percorrer a lista e fazer o que quiser:
-//        for (Employee employee : employees) {
-//            System.out.println(employee);
-//        }
+        if(choice == 1){
+            manager.removeEmployeeByName("João");
+        } else{
+            System.out.println("Digite o nome do funcionário: ");
+            String name = scanner.next();
+            manager.removeEmployeeByName(name);
+        }
     }
 
     public static void main(String[] args) {
-        System.out.printf("""
-        Olá! O que você deseja fazer?
-        
-        [1] - Adicionar funcionário
-        
-        """);
+        while (true) {
+            System.out.println("""
+            Olá! O que você deseja fazer?
+            
+            [1] - Listar funcionários
+            [2] - Remover um funcionário
+            [3] - Sair
+            """);
 
-        int choice = scanner.nextInt();
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consumir a quebra de linha após nextInt()
 
-        switch (choice){
-            case 1:
-                addEmployee();
-                break;
-            case 2:
+            switch (choice) {
+                case 1 -> addEmployee();
+                case 2 -> removeEmployee();
+                case 3 -> {
+                    System.out.println("Encerrando...");
+                    return;
+                }
+                default -> System.out.println("Opção inválida!");
+            }
         }
     }
 }
