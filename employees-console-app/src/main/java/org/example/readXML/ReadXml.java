@@ -5,6 +5,7 @@ import org.w3c.dom.Document;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.util.Objects;
 
 public class ReadXml {
 
@@ -15,7 +16,7 @@ public class ReadXml {
             ClassLoader classLoader = className.getClassLoader();
 
             // Obtém o arquivo a partir do caminho fornecido
-            File file = new File(classLoader.getResource(filePath).getFile());
+            File file = new File(Objects.requireNonNull(classLoader.getResource(filePath)).getFile());
 
             // Cria uma instância da fábrica de documentos
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
